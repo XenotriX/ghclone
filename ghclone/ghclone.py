@@ -116,7 +116,7 @@ class RepoList:
         self.win.clear()
         if self.repos:
             for index, repo in enumerate(self.repos):
-                if index > curses.LINES - 4:
+                if index > self.win.getmaxyx()[0] - 2:
                     break
                 self.win.addstr(index, 0, repo)
             self.win.addstr(self.selected, curses.COLS-3, '>')
