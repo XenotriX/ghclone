@@ -4,6 +4,7 @@ Interactively search GitHub repositories and clone them to the current directory
 '''
 import os
 import curses
+import curses.ascii
 from threading import Thread
 import requests
 
@@ -12,12 +13,12 @@ import requests
 URL = 'https://api.github.com/search/repositories?q='
 
 # Keys
-KEY_BACK = 127
-KEY_EXIT = 3
-KEY_DOWN = 10
-KEY_UP = 11
-KEY_CLONE = 12
-KEY_SEARCH = 13
+KEY_BACK = curses.KEY_BACKSPACE
+KEY_EXIT = curses.ascii.ctrl(ord('c'))
+KEY_DOWN = curses.ascii.ctrl(ord('j'))
+KEY_UP = curses.ascii.ctrl(ord('k'))
+KEY_CLONE = curses.ascii.ctrl(ord('l'))
+KEY_SEARCH = curses.ascii.ctrl(ord('m'))
 
 def tui(stdscr):
     ''' Main function. This must be called by curses.wrapper() '''
@@ -33,18 +34,18 @@ def tui(stdscr):
         char = stdscr.getch()
         if char is KEY_EXIT:
             break
-        elif char is KEY_CLONE:
+        elif char == KEY_CLONE:
             thread = Thread(target=clone, args=(repolist.current(),))
             thread.start()
             break
-        elif char is KEY_SEARCH:
+        elif char == KEY_SEARCH:
             search(search_input.value(), repolist)
             draw_nav_help(stdscr)
-        elif char is KEY_BACK:
+        elif char == KEY_BACK:
             search_input.delete()
-        elif char is KEY_DOWN:
+        elif char == KEY_DOWN:
             repolist.selection_down()
-        elif char is KEY_UP:
+        elif char == KEY_UP:
             repolist.selection_up()
         else:
             search_input.append(curses.keyname(char).decode('utf-8'))
