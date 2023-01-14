@@ -20,10 +20,10 @@ KEY_UP = curses.ascii.ctrl(ord('k'))
 KEY_CLONE = curses.ascii.ctrl(ord('l'))
 KEY_SEARCH = curses.ascii.ctrl(ord('m'))
 
+
 def tui(stdscr):
     ''' Main function. This must be called by curses.wrapper() '''
     init_curses(stdscr)
-    draw_title(stdscr)
     search_input = create_searchbar(stdscr)
     repolist = create_repolist()
     draw_help(stdscr)
@@ -51,6 +51,7 @@ def tui(stdscr):
             search_input.append(curses.keyname(char).decode('utf-8'))
         curses.doupdate()
 
+
 def init_curses(win):
     ''' Configure curses '''
     curses.raw()
@@ -58,17 +59,14 @@ def init_curses(win):
     curses.curs_set(0)
     win.noutrefresh()
 
-def draw_title(win):
-    ''' Draw the title bar '''
-    win.addstr('GitHub search', curses.A_BOLD | curses.A_REVERSE)
-    win.chgat(-1, curses.A_BOLD | curses.A_REVERSE)
 
 def create_searchbar(win):
     ''' Create the searchbar '''
-    win.addstr(curses.LINES-2, 0, 'Search: ', curses.A_REVERSE)
-    searchwin = curses.newwin(1, curses.COLS, curses.LINES-2, 8)
+    win.addstr(0, 0, 'Search: ', curses.A_BOLD | curses.A_REVERSE)
+    searchwin = curses.newwin(1, curses.COLS, 0, 8)
     search_input = SearchInput(searchwin)
     return search_input
+
 
 def create_repolist():
     ''' Create the repo list '''
@@ -76,13 +74,16 @@ def create_repolist():
     repos = RepoList(repolistwin)
     return repos
 
+
 def draw_help(win):
     ''' Draw the help '''
     win.addstr(curses.LINES-1, 0, 'Press \'Enter\' to search')
 
+
 def draw_nav_help(win):
     ''' Draw the navigation help '''
     win.addstr(curses.LINES-1, 0, 'Use C-J/C-K to navigate, Press C-L to clone')
+
 
 def search(query, repos):
     ''' Query the api and show the results '''
@@ -92,15 +93,19 @@ def search(query, repos):
     repos.set_repos(repolist)
     curses.doupdate()
 
+
 def clone(repo):
     ''' Clone the given repository '''
     os.system('git clone https://github.com/' + repo)
 
+
 def main():
     curses.wrapper(tui)
 
+
 class RepoList:
     ''' Repository list widget '''
+
     def __init__(self, win):
         self.win = win
         self.selected = 0
@@ -142,8 +147,10 @@ class RepoList:
         ''' Return the current repository '''
         return self.repos[self.selected]
 
+
 class SearchInput:
     ''' Search field widget '''
+
     def __init__(self, win):
         self.query = ''
         self.win = win
@@ -171,5 +178,6 @@ class SearchInput:
         ''' Return the content '''
         return self.query
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()
