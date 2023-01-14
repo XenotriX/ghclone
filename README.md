@@ -1,18 +1,26 @@
-# GitHub Search
+# ghclone
 
-Command line tool to interactively search and clone repositories from GitHub.
+`ghclone` is a command line tool to interactively search and clone repositories from GitHub.
 
-## Getting Started
+[![asciicast](https://asciinema.org/a/taGDaa7R0gETb1ooJaXcB7MM7.svg)](https://asciinema.org/a/taGDaa7R0gETb1ooJaXcB7MM7)
 
-### Prerequisites
+## Installing
 
-You will need the `poetry` package in order to build the project.
+### From PyPI
 
-### Installing
+``` sh
+$ pip install ghclone
+```
 
-Run `poetry build` then do `pip install dist/*.whl`.
+### From source
 
-> If you don't want to build it you can run the `ghclone/ghclone.py` script manually.
+If you want, you can use the `ghclone/ghclone.py` script on its own.
+Otherwise, you can install it as a package using [https://python-poetry.org/](Poetry).
+
+``` sh
+$ poetry build
+$ pip install dist/*.whl
+```
 
 ## Author
 
@@ -20,4 +28,4 @@ Run `poetry build` then do `pip install dist/*.whl`.
 
 ## License
 
-This project is licensed under the MIT License . See the LICENSE file for details.
+This project is licensed under the MIT License. See the LICENSE file for details.
