@@ -63,6 +63,7 @@ def init_curses(win):
     ''' Configure curses '''
     curses.raw()
     curses.nonl()
+    curses.use_default_colors()
     win.noutrefresh()
 
 
