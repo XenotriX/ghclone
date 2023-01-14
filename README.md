@@ -15,7 +15,7 @@ $ pip install ghclone
 ### From source
 
 If you want, you can use the `ghclone/ghclone.py` script on its own.
-Otherwise, you can install it as a package using [https://python-poetry.org/](Poetry).
+Otherwise, you can install it as a package using [Poetry](https://python-poetry.org/).
 
 ``` sh
 $ poetry build
