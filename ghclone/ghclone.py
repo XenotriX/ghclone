@@ -7,6 +7,7 @@ import curses
 import curses.ascii
 from threading import Thread
 import requests
+from sys import exit
 
 ''' Constants '''
 # Github API url
@@ -33,7 +34,7 @@ def tui(stdscr):
     while True:
         char = stdscr.getch()
         if char is KEY_EXIT:
-            break
+            exit(1)
         elif char == KEY_CLONE:
             thread = Thread(target=clone, args=(repolist.current(),))
             thread.start()
