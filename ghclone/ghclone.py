@@ -55,6 +55,7 @@ def tui(stdscr):
             repolist.selection_up()
         else:
             search_input.append(curses.keyname(char).decode('utf-8'))
+        search_input.update()
         curses.doupdate()
 
 
@@ -62,7 +63,6 @@ def init_curses(win):
     ''' Configure curses '''
     curses.raw()
     curses.nonl()
-    curses.curs_set(0)
     win.noutrefresh()
 
 
@@ -83,10 +83,12 @@ def create_repolist():
 
 def draw_status(win, string):
     ''' Update the status in the bottom line '''
+    cursor_pos = curses.getsyx()
     win.move(curses.LINES-1, 0)
     win.clrtoeol()
     win.addstr(curses.LINES-1, 0, string)
     win.noutrefresh()
+    curses.setsyx(*cursor_pos)
     curses.doupdate()
 
 
@@ -167,17 +169,16 @@ class SearchInput:
         self.win.clear()
         self.win.addstr(0, 0, self.query)
         self.win.chgat(0, 0, -1, curses.A_REVERSE)
+        self.win.move(0, len(self.query))
         self.win.noutrefresh()
 
     def append(self, char):
         ''' Append the character to the input '''
         self.query += char
-        self.update()
 
     def delete(self):
         ''' Remove the last character '''
         self.query = self.query[:-1]
-        self.update()
 
     def value(self):
         ''' Return the content '''
