@@ -21,13 +21,17 @@ KEY_UP = curses.ascii.ctrl(ord('k'))
 KEY_CLONE = curses.ascii.ctrl(ord('l'))
 KEY_SEARCH = curses.ascii.ctrl(ord('m'))
 
+STATUS_SEARCH = 'Press \'Enter\' to search'
+STATUS_NAV = 'Use C-J/C-K to navigate, Press C-L to clone'
+STATUS_LOADING = 'Loading...'
+
 
 def tui(stdscr):
     ''' Main function. This must be called by curses.wrapper() '''
     init_curses(stdscr)
     search_input = create_searchbar(stdscr)
     repolist = create_repolist()
-    draw_help(stdscr)
+    draw_status(stdscr, STATUS_SEARCH)
 
     curses.doupdate()
 
@@ -40,8 +44,9 @@ def tui(stdscr):
             thread.start()
             break
         elif char == KEY_SEARCH:
+            draw_status(stdscr, STATUS_LOADING)
             search(search_input.value(), repolist)
-            draw_nav_help(stdscr)
+            draw_status(stdscr, STATUS_NAV)
         elif char == KEY_BACK:
             search_input.delete()
         elif char == KEY_DOWN:
@@ -76,14 +81,13 @@ def create_repolist():
     return repos
 
 
-def draw_help(win):
-    ''' Draw the help '''
-    win.addstr(curses.LINES-1, 0, 'Press \'Enter\' to search')
-
-
-def draw_nav_help(win):
-    ''' Draw the navigation help '''
-    win.addstr(curses.LINES-1, 0, 'Use C-J/C-K to navigate, Press C-L to clone')
+def draw_status(win, string):
+    ''' Update the status in the bottom line '''
+    win.move(curses.LINES-1, 0)
+    win.clrtoeol()
+    win.addstr(curses.LINES-1, 0, string)
+    win.noutrefresh()
+    curses.doupdate()
 
 
 def search(query, repos):
